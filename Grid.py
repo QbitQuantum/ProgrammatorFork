@@ -73,11 +73,71 @@ class GridObject(GameObject):
                 pass
             elif cmd in Command.ONE_ARGS:
                 if cmd == cmd_list[112]:
-                    x, y = 22, 35
+                    x, y = 35, 42
                     cell.blit(*self.render_text(idx, x=x, y=y))
                 elif cmd == cmd_list[113]:
-                    x, y = 22, 35
+                    x, y = 35, 42
                     cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[24]:
+                    x, y = 42, 33
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[25]:
+                    x, y = 32, 33
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[26]:
+                    x, y = 32, 33
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[40]:
+                    x, y = 20, 33
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[97]:
+                    x, y = 34, 44
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[98]:
+                    x, y = 28, 44
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[104]:
+                    x, y = 32, 48
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[105]:
+                    x, y = 32, 48
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[106]:
+                    x, y = 32, 50
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[107]:
+                    x, y = 32, 48
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[166]:
+                    x, y = 30, 52
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[114]:
+                    x, y = 35, 40
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[115]:
+                    x, y = 35, 40
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[116]:
+                    x, y = 38, 40
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[117]:
+                    x, y = 38, 40
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[137]:
+                    x, y = 32, 33
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[139]:
+                    x, y = 28, 52
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[140]:
+                    x, y = 28, 52
+                    cell.blit(*self.render_text(idx, x=x, y=y))
+                elif cmd == cmd_list[181]:
+                    x, y = 30, 35
+                    cell.blit(*self.render_text(idx, x=x, y=y, color=(255, 255, 255)))
+                elif cmd == cmd_list[182]:
+                    x, y = 30, 35
+                    cell.blit(*self.render_text(idx, x=x, y=y, color=(255, 255, 255)))
                 else:
                     x, y = 30, 33
                     cell.blit(*self.render_text(idx, x=x, y=y))
@@ -91,13 +151,13 @@ class GridObject(GameObject):
             
             self.cell_surfaces[idx] = cell
 
-    def render_text(self, id, i=0, x=5, y=0, fsize=16):
+    def render_text(self, id, i=0, x=5, y=0, fsize=20, color=(100, 255, 100)):
         thumb_size = self.ctx.thumb_size
         padding = self.ctx.padding
         # font = pygame.font.SysFont('arial', fsize)
         font = pygame.font.Font(None, fsize)
 
-        text_color = (100, 255, 100)  # Неоновый синий
+        text_color = color  # зеленый
         # text_surface = font.render(self.ctx.pro.getValue(id, i), True, text_color)
         text_surface = font.render("WWW", True, text_color)
         text_rect = text_surface.get_rect(center=(x, y))
