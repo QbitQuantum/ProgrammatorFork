@@ -34,18 +34,6 @@ class GridObject(GameObject):
     def _execute(self):
         pass
 
-    # def input_text(self):
-    #     if self.text == None:
-    #         self.text = TextInput(self.ctx, self.ctx.x + 3, self.ctx.y + 3, 64, 64, 6)
-    #         self.ctx.manager.add(self.text, self.text.z_order)
-    #         self.hovered = self.ctx.hovered.current
-    #         self.ctx.text = self.text
-    #     if self.hovered != self.ctx.hovered.current:
-    #         self.ctx.manager.delete(self.text.id)
-    #         self.text = None
-    #         self.ctx.text = None
-    #         self.ctx.is_input = False
-    #         self.ctx.re_grid = True
     
     def update_cell_image(self, idx, cmd):
         """Обновляет кеш изображения для указанной ячейки"""
@@ -66,9 +54,10 @@ class GridObject(GameObject):
         cmd_list = list(Command)
         
         for idx, cmd in enumerate(self.ctx.cmd_list):
-            print(self.ctx.cmd_list[idx])
+            print(cmd)
             # Создаем поверхность для ячейки
-            cell = self.ctx.cmd_images[cmd]
+            original = self.ctx.cmd_images[cmd]
+            cell = original.copy()  # Создаем копию, чтобы не изменять оригинал
 
             cmd = self.ctx.pro._commands[idx]
             if cmd in Command.NO_ARGS:
@@ -240,7 +229,7 @@ class GridObject(GameObject):
                     x, y = 32, 50
                     cell.blit(*self.render_text(idx, x=x, y=y, color=0))
             
-            
+        
             # Добавляем рамку
             pygame.draw.rect(cell, (80, 80, 80), cell.get_rect(), 1)
             
@@ -249,8 +238,8 @@ class GridObject(GameObject):
     def render_text(self, id, i=0, x=5, y=0, fsize=20, color=0):
         thumb_size = self.ctx.thumb_size
         padding = self.ctx.padding
-        font = pygame.font.SysFont('Times New Roman', fsize)
-        # font = pygame.font.Font(None, fsize)
+        # font = pygame.font.SysFont('Times New Roman', fsize)
+        font = pygame.font.Font(None, fsize)
         color_var1 = (127, 255, 212) # cyan
         color_var2 = (100, 255, 100) # green
         color_var3 = (152, 251, 152) # light green
