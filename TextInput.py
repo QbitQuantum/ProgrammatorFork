@@ -16,7 +16,7 @@ class TextInput(GameObject):
         self.color = self.color_inactive
         self.cursor_visible = True
         self.cursor_timer = 0
-        self.font = pygame.font.SysFont('arial', 12)
+        self.font = pygame.font.Font(None, 20)
         self.is_active = False
 
     def _execute(self):
@@ -39,16 +39,27 @@ class TextInput(GameObject):
             
             # Эффект свечения
             glow_surface = self.font.render(self.text, True, glow_color)
-            self.screen.blit(glow_surface, (self.rect.x + 4, self.rect.y + 4))
-            self.screen.blit(glow_surface, (self.rect.x + 6, self.rect.y + 6))
+
+            # center
+            x, y = self.rect.x, self.rect.y
+            text_rect = glow_surface.get_rect(center=(x, y))
+            self.screen.blit(glow_surface, text_rect)
+            text_rect.centerx = x - 1
+            text_rect.centery = y - 1
+            self.screen.blit(glow_surface, text_rect)
+            text_rect.centerx = x + 1
+            text_rect.centery = y + 1
+            self.screen.blit(glow_surface, text_rect)
             
             # Основной текст поверх
-            self.screen.blit(text_surface, (self.rect.x + 5, self.rect.y + 5))
+            text_rect.centerx = x
+            text_rect.centery = y
+            self.screen.blit(text_surface, text_rect)
             
             # Курсор
             if self.active and self.cursor_visible:
-                cursor_x = self.rect.x + 5 + text_surface.get_width()
-                cursor_y = self.rect.y + 5
+                cursor_x = x + text_surface.get_width() // 2
+                cursor_y = y - text_surface.get_height() // 2
                 cursor_height = text_surface.get_height()
                 pygame.draw.line(self.screen, text_color, 
                             (cursor_x, cursor_y), 

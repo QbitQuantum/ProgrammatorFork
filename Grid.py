@@ -54,15 +54,10 @@ class GridObject(GameObject):
         cmd_list = list(Command)
         
         for idx, cmd in enumerate(self.ctx.pro._commands):
-            print(cmd)
-            if cmd == Command.VAR_EQUAL:
-                print("it is, index:", idx, "len:", len(self.ctx.pro._commands), " == ", len(self.ctx.cmd_list))
             # Создаем поверхность для ячейки
             original = self.ctx.cmd_images[cmd]
             cell = original.copy()  # Создаем копию, чтобы не изменять оригинал
 
-            if cmd == Command.VAR_EQUAL:
-                print(1)
             if cmd in Command.NO_ARGS:
                 pass
             elif cmd in Command.ONE_ARGS:
@@ -232,8 +227,6 @@ class GridObject(GameObject):
                     x, y = 32, 50
                     cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=0))
             
-            if cmd == Command.VAR_EQUAL:
-                print(2)
         
             # Добавляем рамку
             pygame.draw.rect(cell, (80, 80, 80), cell.get_rect(), 1)
