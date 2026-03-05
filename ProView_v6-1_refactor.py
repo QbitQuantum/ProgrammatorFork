@@ -138,188 +138,174 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
         return True  # Продолжаем работу
 
     def handle_text_input(self, event, _=False):
+        # активирует ввод текста при клике на ячейку
+        # 
 
         id = self.hovered.current
         if _:
             self.text.off_active()
+            self.text.id_cmd = None
             self.is_input = False
             self.re_grid = True
         elif not id:
             pass
         elif not (self.cmd_list[id] in Command.NO_ARGS):
             
-            # if cmd in Command.ONE_ARGS:
-            #     if cmd == cmd_list[112]:
-            #         x, y = 35, 42
-            #         cell.blit(*self.render_text(idx, x=x, y=y))
-            #     elif cmd == cmd_list[113]:
-            #         x, y = 35, 42
-            #         cell.blit(*self.render_text(idx, x=x, y=y))
-            #     elif cmd == cmd_list[24]:
-            #         x, y = 42, 33
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=-1))
-            #     elif cmd == cmd_list[25]:
-            #         x, y = 32, 33
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=-1))
-            #     elif cmd == cmd_list[26]:
-            #         x, y = 32, 33
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=-1))
-            #     elif cmd == cmd_list[40]:
-            #         x, y = 20, 33
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=-1))
-            #     elif cmd == cmd_list[97]:
-            #         x, y = 34, 44
-            #         cell.blit(*self.render_text(idx, x=x, y=y))
-            #     elif cmd == cmd_list[98]:
-            #         x, y = 28, 44
-            #         cell.blit(*self.render_text(idx, x=x, y=y))
-            #     elif cmd == cmd_list[104]:
-            #         x, y = 32, 48
-            #         cell.blit(*self.render_text(idx, x=x, y=y))
-            #     elif cmd == cmd_list[105]:
-            #         x, y = 32, 48
-            #         cell.blit(*self.render_text(idx, x=x, y=y))
-            #     elif cmd == cmd_list[106]:
-            #         x, y = 32, 50
-            #         cell.blit(*self.render_text(idx, x=x, y=y))
-            #     elif cmd == cmd_list[107]:
-            #         x, y = 32, 48
-            #         cell.blit(*self.render_text(idx, x=x, y=y))
-            #     elif cmd == cmd_list[166]:
-            #         x, y = 30, 52
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=-1))
-            #     elif cmd == cmd_list[114]:
-            #         x, y = 35, 40
-            #         cell.blit(*self.render_text(idx, x=x, y=y))
-            #     elif cmd == cmd_list[115]:
-            #         x, y = 35, 40
-            #         cell.blit(*self.render_text(idx, x=x, y=y))
-            #     elif cmd == cmd_list[116]:
-            #         x, y = 38, 40
-            #         cell.blit(*self.render_text(idx, x=x, y=y))
-            #     elif cmd == cmd_list[117]:
-            #         x, y = 38, 40
-            #         cell.blit(*self.render_text(idx, x=x, y=y))
-            #     elif cmd == cmd_list[137]:
-            #         x, y = 32, 33
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=-1))
-            #     elif cmd == cmd_list[139]:
-            #         x, y = 28, 52
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=-1))
-            #     elif cmd == cmd_list[140]:
-            #         x, y = 28, 52
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=-1))
-            #     elif cmd == cmd_list[181]:
-            #         x, y = 30, 35
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=-1))
-            #     elif cmd == cmd_list[182]:
-            #         x, y = 30, 35
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=-1))
-            #     else:
-            #         x, y = 30, 33
-            #         cell.blit(*self.render_text(idx, x=x, y=y))
-            # elif cmd in Command.TWO_ARGS:
-            #     if cmd == cmd_list[119]:
-            #         x, y = 22, 23
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #         x, y = 30, 52
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=1))
-            #     elif cmd == cmd_list[99]:
-            #         x, y = 30, 15
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=1))
-            #         x, y = 32, 50
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #     elif cmd == cmd_list[100]:
-            #         x, y = 30, 15
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=1))
-            #         x, y = 32, 50
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #     elif cmd == cmd_list[101]:
-            #         x, y = 30, 15
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=1))
-            #         x, y = 32, 50
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #     elif cmd == cmd_list[102]:
-            #         x, y = 30, 15
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=1))
-            #         x, y = 32, 50
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #     elif cmd == cmd_list[103]:
-            #         x, y = 30, 15
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=1))
-            #         x, y = 32, 50
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #     elif cmd == cmd_list[120]:
-            #         x, y = 22, 23
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #         x, y = 30, 52
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=1))
-            #     elif cmd == cmd_list[121]:
-            #         x, y = 22, 23
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #         x, y = 30, 52
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=1))
-            #     elif cmd == cmd_list[122]:
-            #         x, y = 22, 23
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #         x, y = 30, 52
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=1))
-            #     elif cmd == cmd_list[123]:
-            #         x, y = 22, 23
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #         x, y = 30, 52
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=1))
-            #     elif cmd == cmd_list[124]:
-            #         x, y = 22, 23
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #         x, y = 30, 52
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=1))
-            #     elif cmd == cmd_list[108]:
-            #         x, y = 26, 16
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=2))
-            #         x, y = 30, 50
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #     elif cmd == cmd_list[109]:
-            #         x, y = 26, 16
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=2))
-            #         x, y = 30, 50
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #     elif cmd == cmd_list[110]:
-            #         x, y = 26, 16
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=2))
-            #         x, y = 30, 50
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #     elif cmd == cmd_list[111]:
-            #         x, y = 26, 16
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=2))
-            #         x, y = 30, 50
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #     elif cmd == cmd_list[128]:
-            #         x, y = 22, 22
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=0))
-            #         x, y = 30, 50
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=1))
-            #     elif cmd == cmd_list[129]:
-            #         x, y = 22, 22
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=2))
-            #         x, y = 38, 50
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=0))
-            #     elif cmd == cmd_list[130]:
-            #         x, y = 22, 22
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=2))
-            #         x, y = 38, 50
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=0))
-            #     else:
-            #         x, y = 30, 15
-            #         cell.blit(*self.render_text(idx, x=x, y=y, color=1))
-            #         x, y = 32, 50
-            #         cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=0))
+            cmd_list = list(Command) # список команд
+            cmd = self.cmd_list[id] # текущая команда
+            type = 0 # тип вводимого значения: 0метка/1переменная/2значение
+            num = 0 # первое или второе значение оператора
+            
+            x, y = 0, 0
+            width = self.thumb_size // 2
+            height = self.thumb_size // 3
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            
 
-            self.text.set_rect(self.x, self.y, 64, 64)
-            self.text.on_active()
-            self.text.handle_event(event)
-            self.is_input = True
-            self.re_grid = True
+            if cmd in Command.ONE_ARGS:
+                if cmd == cmd_list[112]:
+                    x, y = 35, 42
+                elif cmd == cmd_list[113]:
+                    x, y = 35, 42
+                elif cmd == cmd_list[24]:
+                    x, y = 42, 33
+                elif cmd == cmd_list[25]:
+                    x, y = 32, 33
+                elif cmd == cmd_list[26]:
+                    x, y = 32, 33
+                elif cmd == cmd_list[40]:
+                    x, y = 20, 33
+                elif cmd == cmd_list[97]:
+                    x, y = 34, 44
+                elif cmd == cmd_list[98]:
+                    x, y = 28, 44
+                elif cmd == cmd_list[104]:
+                    x, y = 32, 48
+                elif cmd == cmd_list[105]:
+                    x, y = 32, 48
+                elif cmd == cmd_list[106]:
+                    x, y = 32, 50
+                elif cmd == cmd_list[107]:
+                    x, y = 32, 48
+                elif cmd == cmd_list[166]:
+                    x, y = 30, 52
+                elif cmd == cmd_list[114]:
+                    x, y = 35, 40
+                elif cmd == cmd_list[115]:
+                    x, y = 35, 40
+                elif cmd == cmd_list[116]:
+                    x, y = 38, 40
+                elif cmd == cmd_list[117]:
+                    x, y = 38, 40
+                elif cmd == cmd_list[137]:
+                    x, y = 32, 33
+                elif cmd == cmd_list[139]:
+                    x, y = 28, 52
+                elif cmd == cmd_list[140]:
+                    x, y = 28, 52
+                elif cmd == cmd_list[181]:
+                    x, y = 30, 35
+                elif cmd == cmd_list[182]:
+                    x, y = 30, 35
+                else:
+                    x, y = 30, 33
+            elif cmd in Command.TWO_ARGS:
+                if self.y + 32 > mouse_y:
+                    num = 0
+                    if cmd == cmd_list[119]:
+                        x, y = 22, 23
+                    elif cmd == cmd_list[99]:
+                        x, y = 30, 15
+                    elif cmd == cmd_list[100]:
+                        x, y = 30, 15
+                    elif cmd == cmd_list[101]:
+                        x, y = 30, 15
+                    elif cmd == cmd_list[102]:
+                        x, y = 30, 15
+                    elif cmd == cmd_list[103]:
+                        x, y = 30, 15
+                    elif cmd == cmd_list[120]:
+                        x, y = 22, 23
+                    elif cmd == cmd_list[121]:
+                        x, y = 22, 23
+                    elif cmd == cmd_list[122]:
+                        x, y = 22, 23
+                    elif cmd == cmd_list[123]:
+                        x, y = 22, 23
+                    elif cmd == cmd_list[124]:
+                        x, y = 22, 23
+                    elif cmd == cmd_list[108]:
+                        x, y = 26, 16
+                    elif cmd == cmd_list[109]:
+                        x, y = 26, 16
+                    elif cmd == cmd_list[110]:
+                        x, y = 26, 16
+                    elif cmd == cmd_list[111]:
+                        x, y = 26, 16
+                    elif cmd == cmd_list[128]:
+                        x, y = 22, 22
+                    elif cmd == cmd_list[129]:
+                        x, y = 22, 22
+                    elif cmd == cmd_list[130]:
+                        x, y = 22, 22
+                    else:
+                        x, y = 30, 15
+                elif self.y + 32 <= mouse_y:
+                    num = 1
+                    if cmd == cmd_list[119]:
+                        x, y = 30, 52
+                    elif cmd == cmd_list[99]:
+                        x, y = 32, 50
+                    elif cmd == cmd_list[100]:
+                        x, y = 32, 50
+                    elif cmd == cmd_list[101]:
+                        x, y = 32, 50
+                    elif cmd == cmd_list[102]:
+                        x, y = 32, 50
+                    elif cmd == cmd_list[103]:
+                        x, y = 32, 50
+                    elif cmd == cmd_list[120]:
+                        x, y = 30, 52
+                    elif cmd == cmd_list[121]:
+                        x, y = 30, 52
+                    elif cmd == cmd_list[122]:
+                        x, y = 30, 52
+                    elif cmd == cmd_list[123]:
+                        x, y = 30, 52
+                    elif cmd == cmd_list[124]:
+                        x, y = 30, 52
+                    elif cmd == cmd_list[108]:
+                        x, y = 30, 50
+                    elif cmd == cmd_list[109]:
+                        x, y = 30, 50
+                    elif cmd == cmd_list[110]:
+                        x, y = 30, 50
+                    elif cmd == cmd_list[111]:
+                        x, y = 30, 50
+                    elif cmd == cmd_list[128]:
+                        x, y = 30, 50
+                    elif cmd == cmd_list[129]:
+                        x, y = 38, 50
+                    elif cmd == cmd_list[130]:
+                        x, y = 38, 50
+                    else:
+                        x, y = 32, 50
+
+            if type == 0: # label
+                self.text.set_max_length(3)
+
+            x += self.x
+            y += self.y
+            self.text.set_rect(x - width // 2, y - height // 2, width, height)
+
+            if self.text.rect.collidepoint(event.pos):
+                self.text.id_cmd = id
+                self.text.num_cmd = num
+                self.text.text = self.pro.getValue(id, num)
+                self.text.on_active()
+                self.text.handle_event(event)
+                self.is_input = True
+                self.re_grid = True
 
     def _init_all(self):
         # === 2. UI размеры и константы ===
@@ -440,7 +426,7 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
         self.grid = GridObject(self, z_order=1)
         self.top_panel = TopPanelObject(self, z_order=10)
         self.ui = UIManagerObject(self, z_order=20)
-        self.text = TextInput(self.screen, 0, 0, 0, 0)
+        self.text = TextInput(self, self.screen, 0, 0, 0, 0)
         
         self.manager.add(self.grid, self.grid.z_order)
         self.manager.add(self.ui, self.ui.z_order)

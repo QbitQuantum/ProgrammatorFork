@@ -4,8 +4,9 @@ from my_lib.GameObjectRenderer import GameObject
 
 
 class TextInput(GameObject):
-    def __init__(self, screen, x, y, width, height, max_length=20):
+    def __init__(self, ctx, screen, x, y, width, height, max_length=20):
         super().__init__(1000)
+        self.ctx = ctx
         self.screen = screen
         self.rect = pygame.Rect(x, y, width, height)
         self.text = ""
@@ -18,6 +19,14 @@ class TextInput(GameObject):
         self.cursor_timer = 0
         self.font = pygame.font.Font(None, 20)
         self.is_active = False
+        self.id_cmd = None
+        self.num_cmd = 0
+
+        # Новые атрибуты для выделения текста
+        self.text_selected = False
+        self.selection_start = 0
+        self.selection_end = 0
+        self.cursor_position = 0  # Позиция курсора в тексте
 
     def _execute(self):
         pass
@@ -41,7 +50,7 @@ class TextInput(GameObject):
             glow_surface = self.font.render(self.text, True, glow_color)
 
             # center
-            x, y = self.rect.x, self.rect.y
+            x, y = self.rect.x + self.rect.width // 2, self.rect.y + self.rect.height // 2
             text_rect = glow_surface.get_rect(center=(x, y))
             self.screen.blit(glow_surface, text_rect)
             text_rect.centerx = x - 1
@@ -73,12 +82,18 @@ class TextInput(GameObject):
         
         if event.type == pygame.KEYDOWN and self.active:
             if event.key == pygame.K_RETURN:
+                self.ctx.pro._values[self.id_cmd][self.num_cmd] = self.text
+                self.ctx.grid.update_cell_image(self.id_cmd, self.ctx.cmd_list[self.id_cmd])
+                self.ctx.re_grid = True
                 print(f"Введенный текст: {self.text}")
             elif event.key == pygame.K_BACKSPACE:
                 self.text = self.text[:-1]
             elif len(self.text) < self.max_length and event.unicode.isprintable():
                 self.text += event.unicode
     
+    def set_max_length(self, num):
+        self.max_length = num
+
     def set_rect(self, x, y, w, h):
         self.rect = pygame.Rect(x, y, w, h)
 
