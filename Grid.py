@@ -213,6 +213,8 @@ class GridObject(GameObject):
                     x, y = 32, 50
                     cell.blit(*self.render_text(idx, x=x, y=y, i=1, color=0))
             
+            # Добавляем рамку
+            pygame.draw.rect(cell, (80, 80, 80), cell.get_rect(), 1)
             
             # Обновляем кеш
             self.cell_surfaces[idx] = cell

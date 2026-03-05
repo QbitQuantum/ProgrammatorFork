@@ -69,7 +69,6 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
             # Обновляем hovered если изменился
             if new_hovered != self.hovered.current:
                 self.hovered.update(new_hovered)
-                self.handle_text_input(event, True)
 
             if event.type == pygame.QUIT:
                 print(f"[DEBUG] Получен сигнал QUIT")
@@ -126,6 +125,13 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
             # Обработка событий pygame_gui
             self.ui.ui_manager.process_events(event)
         
+        if self.text.flag_end:
+            self.text.off_active()
+            self.is_input = False
+            self.re_grid = True
+            
+
+
         # Обновляем pygame_gui
         self.ui.ui_manager.update(time_delta)
         
@@ -137,175 +143,184 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
         
         return True  # Продолжаем работу
 
-    def handle_text_input(self, event, _=False):
+    def handle_text_input(self, event):
         # активирует ввод текста при клике на ячейку
         # 
 
         id = self.hovered.current
-        if _:
+        if self.is_input and id != self.text.id_cmd:
             self.text.off_active()
-            self.text.id_cmd = None
+            
             self.is_input = False
             self.re_grid = True
         elif not id:
             pass
+
         elif not (self.cmd_list[id] in Command.NO_ARGS):
+            if self.is_input:
+                self.close_input()
             
-            cmd_list = list(Command) # список команд
-            cmd = self.cmd_list[id] # текущая команда
-            type = 0 # тип вводимого значения: 0метка/1переменная/2значение
-            num = 0 # первое или второе значение оператора
-            
-            x, y = 0, 0
-            width = self.thumb_size // 2
-            height = self.thumb_size // 3
-            mouse_x, mouse_y = pygame.mouse.get_pos()
-            
+            self.open_input(event, id)
 
-            if cmd in Command.ONE_ARGS:
-                if cmd == cmd_list[112]:
-                    x, y = 35, 42
-                elif cmd == cmd_list[113]:
-                    x, y = 35, 42
-                elif cmd == cmd_list[24]:
-                    x, y = 42, 33
-                elif cmd == cmd_list[25]:
-                    x, y = 32, 33
-                elif cmd == cmd_list[26]:
-                    x, y = 32, 33
-                elif cmd == cmd_list[40]:
-                    x, y = 20, 33
-                elif cmd == cmd_list[97]:
-                    x, y = 34, 44
-                elif cmd == cmd_list[98]:
-                    x, y = 28, 44
-                elif cmd == cmd_list[104]:
-                    x, y = 32, 48
-                elif cmd == cmd_list[105]:
-                    x, y = 32, 48
-                elif cmd == cmd_list[106]:
-                    x, y = 32, 50
-                elif cmd == cmd_list[107]:
-                    x, y = 32, 48
-                elif cmd == cmd_list[166]:
-                    x, y = 30, 52
-                elif cmd == cmd_list[114]:
-                    x, y = 35, 40
-                elif cmd == cmd_list[115]:
-                    x, y = 35, 40
-                elif cmd == cmd_list[116]:
-                    x, y = 38, 40
-                elif cmd == cmd_list[117]:
-                    x, y = 38, 40
-                elif cmd == cmd_list[137]:
-                    x, y = 32, 33
-                elif cmd == cmd_list[139]:
-                    x, y = 28, 52
-                elif cmd == cmd_list[140]:
-                    x, y = 28, 52
-                elif cmd == cmd_list[181]:
-                    x, y = 30, 35
-                elif cmd == cmd_list[182]:
-                    x, y = 30, 35
+    def open_input(self, event, id):
+        cmd_list = list(Command) # список команд
+        cmd = self.cmd_list[id] # текущая команда
+        type = 0 # тип вводимого значения: 0метка/1переменная/2значение
+        num = 0 # первое или второе значение оператора
+        
+        x, y = 0, 0
+        width = self.thumb_size // 2
+        height = self.thumb_size // 3
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        
+
+        if cmd in Command.ONE_ARGS:
+            if cmd == cmd_list[112]:
+                x, y = 35, 42
+            elif cmd == cmd_list[113]:
+                x, y = 35, 42
+            elif cmd == cmd_list[24]:
+                x, y = 42, 33
+            elif cmd == cmd_list[25]:
+                x, y = 32, 33
+            elif cmd == cmd_list[26]:
+                x, y = 32, 33
+            elif cmd == cmd_list[40]:
+                x, y = 20, 33
+            elif cmd == cmd_list[97]:
+                x, y = 34, 44
+            elif cmd == cmd_list[98]:
+                x, y = 28, 44
+            elif cmd == cmd_list[104]:
+                x, y = 32, 48
+            elif cmd == cmd_list[105]:
+                x, y = 32, 48
+            elif cmd == cmd_list[106]:
+                x, y = 32, 50
+            elif cmd == cmd_list[107]:
+                x, y = 32, 48
+            elif cmd == cmd_list[166]:
+                x, y = 30, 52
+            elif cmd == cmd_list[114]:
+                x, y = 35, 40
+            elif cmd == cmd_list[115]:
+                x, y = 35, 40
+            elif cmd == cmd_list[116]:
+                x, y = 38, 40
+            elif cmd == cmd_list[117]:
+                x, y = 38, 40
+            elif cmd == cmd_list[137]:
+                x, y = 32, 33
+            elif cmd == cmd_list[139]:
+                x, y = 28, 52
+            elif cmd == cmd_list[140]:
+                x, y = 28, 52
+            elif cmd == cmd_list[181]:
+                x, y = 30, 35
+            elif cmd == cmd_list[182]:
+                x, y = 30, 35
+            else:
+                x, y = 30, 33
+        elif cmd in Command.TWO_ARGS:
+            if self.y + 32 > mouse_y:
+                num = 1
+                if cmd == cmd_list[119]:
+                    x, y = 22, 23
+                elif cmd == cmd_list[99]:
+                    x, y = 30, 15
+                elif cmd == cmd_list[100]:
+                    x, y = 30, 15
+                elif cmd == cmd_list[101]:
+                    x, y = 30, 15
+                elif cmd == cmd_list[102]:
+                    x, y = 30, 15
+                elif cmd == cmd_list[103]:
+                    x, y = 30, 15
+                elif cmd == cmd_list[120]:
+                    x, y = 22, 23
+                elif cmd == cmd_list[121]:
+                    x, y = 22, 23
+                elif cmd == cmd_list[122]:
+                    x, y = 22, 23
+                elif cmd == cmd_list[123]:
+                    x, y = 22, 23
+                elif cmd == cmd_list[124]:
+                    x, y = 22, 23
+                elif cmd == cmd_list[108]:
+                    x, y = 26, 16
+                elif cmd == cmd_list[109]:
+                    x, y = 26, 16
+                elif cmd == cmd_list[110]:
+                    x, y = 26, 16
+                elif cmd == cmd_list[111]:
+                    x, y = 26, 16
+                elif cmd == cmd_list[128]:
+                    x, y = 22, 22
+                elif cmd == cmd_list[129]:
+                    x, y = 22, 22
+                elif cmd == cmd_list[130]:
+                    x, y = 22, 22
                 else:
-                    x, y = 30, 33
-            elif cmd in Command.TWO_ARGS:
-                if self.y + 32 > mouse_y:
-                    num = 0
-                    if cmd == cmd_list[119]:
-                        x, y = 22, 23
-                    elif cmd == cmd_list[99]:
-                        x, y = 30, 15
-                    elif cmd == cmd_list[100]:
-                        x, y = 30, 15
-                    elif cmd == cmd_list[101]:
-                        x, y = 30, 15
-                    elif cmd == cmd_list[102]:
-                        x, y = 30, 15
-                    elif cmd == cmd_list[103]:
-                        x, y = 30, 15
-                    elif cmd == cmd_list[120]:
-                        x, y = 22, 23
-                    elif cmd == cmd_list[121]:
-                        x, y = 22, 23
-                    elif cmd == cmd_list[122]:
-                        x, y = 22, 23
-                    elif cmd == cmd_list[123]:
-                        x, y = 22, 23
-                    elif cmd == cmd_list[124]:
-                        x, y = 22, 23
-                    elif cmd == cmd_list[108]:
-                        x, y = 26, 16
-                    elif cmd == cmd_list[109]:
-                        x, y = 26, 16
-                    elif cmd == cmd_list[110]:
-                        x, y = 26, 16
-                    elif cmd == cmd_list[111]:
-                        x, y = 26, 16
-                    elif cmd == cmd_list[128]:
-                        x, y = 22, 22
-                    elif cmd == cmd_list[129]:
-                        x, y = 22, 22
-                    elif cmd == cmd_list[130]:
-                        x, y = 22, 22
-                    else:
-                        x, y = 30, 15
-                elif self.y + 32 <= mouse_y:
-                    num = 1
-                    if cmd == cmd_list[119]:
-                        x, y = 30, 52
-                    elif cmd == cmd_list[99]:
-                        x, y = 32, 50
-                    elif cmd == cmd_list[100]:
-                        x, y = 32, 50
-                    elif cmd == cmd_list[101]:
-                        x, y = 32, 50
-                    elif cmd == cmd_list[102]:
-                        x, y = 32, 50
-                    elif cmd == cmd_list[103]:
-                        x, y = 32, 50
-                    elif cmd == cmd_list[120]:
-                        x, y = 30, 52
-                    elif cmd == cmd_list[121]:
-                        x, y = 30, 52
-                    elif cmd == cmd_list[122]:
-                        x, y = 30, 52
-                    elif cmd == cmd_list[123]:
-                        x, y = 30, 52
-                    elif cmd == cmd_list[124]:
-                        x, y = 30, 52
-                    elif cmd == cmd_list[108]:
-                        x, y = 30, 50
-                    elif cmd == cmd_list[109]:
-                        x, y = 30, 50
-                    elif cmd == cmd_list[110]:
-                        x, y = 30, 50
-                    elif cmd == cmd_list[111]:
-                        x, y = 30, 50
-                    elif cmd == cmd_list[128]:
-                        x, y = 30, 50
-                    elif cmd == cmd_list[129]:
-                        x, y = 38, 50
-                    elif cmd == cmd_list[130]:
-                        x, y = 38, 50
-                    else:
-                        x, y = 32, 50
+                    x, y = 30, 15
+            elif self.y + 32 <= mouse_y:
+                num = 0
+                if cmd == cmd_list[119]:
+                    x, y = 30, 52
+                elif cmd == cmd_list[99]:
+                    x, y = 32, 50
+                elif cmd == cmd_list[100]:
+                    x, y = 32, 50
+                elif cmd == cmd_list[101]:
+                    x, y = 32, 50
+                elif cmd == cmd_list[102]:
+                    x, y = 32, 50
+                elif cmd == cmd_list[103]:
+                    x, y = 32, 50
+                elif cmd == cmd_list[120]:
+                    x, y = 30, 52
+                elif cmd == cmd_list[121]:
+                    x, y = 30, 52
+                elif cmd == cmd_list[122]:
+                    x, y = 30, 52
+                elif cmd == cmd_list[123]:
+                    x, y = 30, 52
+                elif cmd == cmd_list[124]:
+                    x, y = 30, 52
+                elif cmd == cmd_list[108]:
+                    x, y = 30, 50
+                elif cmd == cmd_list[109]:
+                    x, y = 30, 50
+                elif cmd == cmd_list[110]:
+                    x, y = 30, 50
+                elif cmd == cmd_list[111]:
+                    x, y = 30, 50
+                elif cmd == cmd_list[128]:
+                    x, y = 30, 50
+                elif cmd == cmd_list[129]:
+                    x, y = 38, 50
+                elif cmd == cmd_list[130]:
+                    x, y = 38, 50
+                else:
+                    x, y = 32, 50
 
-            if type == 0: # label
-                self.text.set_max_length(3)
+        if type == 0: # label
+            self.text.set_max_length(3)
 
-            x += self.x
-            y += self.y
-            self.text.set_rect(x - width // 2, y - height // 2, width, height)
+        x += self.x
+        y += self.y
+        self.text.set_rect(x - width // 2, y - height // 2, width, height)
 
-            if self.text.rect.collidepoint(event.pos):
-                self.text.id_cmd = id
-                self.text.num_cmd = num
-                self.text.text = self.pro.getValue(id, num)
-                self.text.on_active()
-                self.text.handle_event(event)
-                self.is_input = True
-                self.re_grid = True
+        if self.text.rect.collidepoint(event.pos):
+            valueT = self.pro.getValue(id, num)
+            self.text.on_active(event, id, num, valueT)
+            self.is_input = True
+            self.re_grid = True
+
+    def close_input(self):
+        self.text.off_active()
+            
+        self.is_input = False
+        self.re_grid = True
 
     def _init_all(self):
         # === 2. UI размеры и константы ===
