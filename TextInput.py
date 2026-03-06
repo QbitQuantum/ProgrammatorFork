@@ -17,7 +17,7 @@ class TextInput(GameObject):
         self.color = self.color_inactive
         self.cursor_visible = True
         self.cursor_timer = 0
-        self.font = pygame.font.SysFont('arial', 24)
+        self.font = pygame.font.SysFont('arial', 16, bold=True)
         self.is_active = False
         self.id_cmd = None
         self.num_cmd = 0
@@ -57,20 +57,20 @@ class TextInput(GameObject):
 
             # === ТЕМНАЯ ОБЛАСТЬ ПОД ТЕКСТОМ ===
             # Создаем поверхность для темной области
-            text_rect = text_surface.get_rect(center=(x, y))
-            padding = 2  # Отступ от текста
-            bg_rect = pygame.Rect(
-                text_rect.x - padding,
-                text_rect.y - padding,
-                text_rect.width + padding * 2,
-                text_rect.height + padding * 2
-            )
+            # text_rect = text_surface.get_rect(center=(x, y))
+            # padding = 1  # Отступ от текста
+            # bg_rect = pygame.Rect(
+            #     text_rect.x - padding,
+            #     text_rect.y - padding,
+            #     text_rect.width + padding * 2,
+            #     text_rect.height + padding * 2
+            # )
             
-            # Рисуем полупрозрачный черный прямоугольник
-            bg_surface = pygame.Surface((bg_rect.width, bg_rect.height))
-            bg_surface.set_alpha(180)  # Прозрачность (0-255)
-            bg_surface.fill((0, 0, 0))
-            self.screen.blit(bg_surface, bg_rect)
+            # # Рисуем полупрозрачный черный прямоугольник
+            # bg_surface = pygame.Surface((bg_rect.width, bg_rect.height))
+            # bg_surface.set_alpha(180)  # Прозрачность (0-255)
+            # bg_surface.fill((0, 0, 0))
+            # self.screen.blit(bg_surface, bg_rect)
 
 
             self.screen.blit(glow_surface, text_rect)
@@ -220,7 +220,7 @@ class TextInput(GameObject):
                     access = False
                     if (type == 1 or type == 0) and (event.unicode.isalpha() and event.unicode.isascii()):
                         access = True
-                    elif (type == 2) and event.unicode.isdigit():
+                    elif (type == 1 or type == 2) and event.unicode.isdigit():
                         access = True
                     if access and self.text_selected and self.selection_start != self.selection_end:
                         # Заменяем выделенный текст

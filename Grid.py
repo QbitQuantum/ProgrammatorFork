@@ -135,11 +135,11 @@ class GridObject(GameObject):
             
             self.cell_surfaces[idx] = cell
 
-    def render_text(self, id, i=0, x=5, y=0, fsize=20, color=0):
+    def render_text(self, id, i=0, x=5, y=0, fsize=16, color=0):
         thumb_size = self.ctx.thumb_size
         padding = self.ctx.padding
         # font = pygame.font.SysFont('Times New Roman', fsize)
-        font = pygame.font.Font(None, fsize)
+        font = pygame.font.SysFont('arial', fsize, bold=True)
         color_var1 = (127, 255, 212) # cyan
         color_var2 = (100, 255, 100) # green
         color_var3 = (152, 251, 152) # light green
