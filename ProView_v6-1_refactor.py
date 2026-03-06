@@ -100,7 +100,8 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
                 
             # Обработка мыши
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                self.close_input()
+                if self.is_input:
+                    self.close_input()
                 print(f"[DEBUG] Нажатие мыши: кнопка {event.button}")
                 if event.button == 1:  # Левая кнопка мыши
                     
@@ -201,11 +202,15 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
         if self.text.rect.collidepoint(event.pos):
             valueT = self.pro.getValue(id, num)
             self.text.on_active(event, id, num, valueT)
+            self.grid._create_cell(id, cmd, not num)
             self.is_input = True
             self.re_grid = True
 
     def close_input(self):
+        id = self.text.id_cmd
+        cmd = self.cmd_list[id]
         self.text.off_active()
+        self.grid._create_cell(id, cmd, 2)
             
         self.is_input = False
         self.re_grid = True
@@ -590,7 +595,7 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
 
 if __name__ == "__main__":
     
-    window_width, window_height = 1250, 760
+    window_width, window_height = 1250, 900
 
     pygame.init()
     screen = pygame.display.set_mode((window_width, window_height), pygame.RESIZABLE)

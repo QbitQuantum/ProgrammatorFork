@@ -85,6 +85,78 @@ class GridObject(GameObject):
             # Помечаем сетку для перерисовки
             self.ctx.re_grid = True
 
+    def _create_cell(self, idx, cmd, condition):
+        """Создает поверхности для всех ячеек заранее"""
+        thumb_size = self.ctx.thumb_size
+        padding = self.ctx.padding
+        font = pygame.font.SysFont('arial', self.ctx.font_size)
+        cmd_list = list(Command)
+        
+        # Создаем поверхность для ячейки
+        original = self.ctx.cmd_images[cmd]
+        cell = original.copy()  # Создаем копию, чтобы не изменять оригинал
+
+        if cmd in Command.NO_ARGS:
+            pass
+        elif cmd in Command.ONE_ARGS:
+            if condition == 2:
+                x, y, type = self.conf.get_one_args_config(cmd)
+                if type == 0: # label
+                    cell.blit(*self.render_text(idx, x=x, y=y, i=0, color=-1))
+                elif type == 1: # variable
+                    cell.blit(*self.render_text(idx, x=x, y=y, i=0, color=0))
+                elif type == 2: # value
+                    pass
+
+        elif cmd in Command.TWO_ARGS:
+            if condition == 0:
+                is_above = True
+                num = 0 if is_above else 1
+                x, y, type = self.conf.get_two_args_config(cmd, is_above)
+                if type == 0: # label
+                    cell.blit(*self.render_text(idx, x=x, y=y, i=num, color=-1))
+                elif type == 1: # variable
+                    cell.blit(*self.render_text(idx, x=x, y=y, i=num, color=2))
+                elif type == 2: # value
+                    cell.blit(*self.render_text(idx, x=x, y=y, i=num, color=1))
+
+            elif condition == 1:
+                is_above = False
+                num = 0 if is_above else 1
+                x, y, type = self.conf.get_two_args_config(cmd, is_above)
+                if type == 0: # label
+                    cell.blit(*self.render_text(idx, x=x, y=y, i=num, color=-1))
+                elif type == 1: # variable
+                    cell.blit(*self.render_text(idx, x=x, y=y, i=num, color=0))
+                elif type == 2: # value
+                    cell.blit(*self.render_text(idx, x=x, y=y, i=num, color=1))
+            elif condition == 2:
+                is_above = True
+                num = 0 if is_above else 1
+                x, y, type = self.conf.get_two_args_config(cmd, is_above)
+                if type == 0: # label
+                    cell.blit(*self.render_text(idx, x=x, y=y, i=num, color=-1))
+                elif type == 1: # variable
+                    cell.blit(*self.render_text(idx, x=x, y=y, i=num, color=2))
+                elif type == 2: # value
+                    cell.blit(*self.render_text(idx, x=x, y=y, i=num, color=1))
+
+                is_above = False
+                num = 0 if is_above else 1
+                x, y, type = self.conf.get_two_args_config(cmd, is_above)
+                if type == 0: # label
+                    cell.blit(*self.render_text(idx, x=x, y=y, i=num, color=-1))
+                elif type == 1: # variable
+                    cell.blit(*self.render_text(idx, x=x, y=y, i=num, color=0))
+                elif type == 2: # value
+                    cell.blit(*self.render_text(idx, x=x, y=y, i=num, color=1))
+
+    
+        # Добавляем рамку
+        pygame.draw.rect(cell, (80, 80, 80), cell.get_rect(), 1)
+        
+        self.cell_surfaces[idx] = cell
+
     def _create_all_cells(self):
         """Создает поверхности для всех ячеек заранее"""
         thumb_size = self.ctx.thumb_size

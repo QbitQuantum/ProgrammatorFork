@@ -152,7 +152,6 @@ class TextInput(GameObject):
                 self.flag_end = True
             elif event.key == pygame.K_RETURN:
                 self.ctx.pro._values[self.id_cmd][self.num_cmd] = self.text
-                self.ctx.grid.update_cell_image(self.id_cmd, self.ctx.cmd_list[self.id_cmd])
                 self.ctx.re_grid = True
                 print(f"Введенный текст: {self.text}")
                 self.text_selected = False
@@ -220,7 +219,7 @@ class TextInput(GameObject):
                     access = False
                     if (type == 1 or type == 0) and (event.unicode.isalpha() and event.unicode.isascii()):
                         access = True
-                    elif (type == 1 or type == 2) and event.unicode.isdigit():
+                    elif event.unicode.isdigit():
                         access = True
                     if access and self.text_selected and self.selection_start != self.selection_end:
                         # Заменяем выделенный текст
