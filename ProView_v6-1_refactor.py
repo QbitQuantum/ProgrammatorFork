@@ -77,15 +77,15 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
                 return False  # Сигнал для выхода
                 
             # Обработка событий кнопок UI
-            elif event.type == pygame.USEREVENT:
-                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    self.close_input()
-                    print(f"[DEBUG] Нажата кнопка UI")
-                    if len(self.ui.menu_buttons) > 0 and event.ui_element == self.ui.menu_buttons[0]:
-                        self.on_menu_click()
-                    elif len(self.ui.menu_buttons) > 1 and event.ui_element == self.ui.menu_buttons[1]:
-                        print("[DEBUG] Нажата кнопка Настройки")
-                        self.open_settings()
+            # elif event.type == pygame.USEREVENT:
+            #     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+            #         self.close_input()
+            #         print(f"[DEBUG] Нажата кнопка UI")
+            #         if len(self.ui.menu_buttons) > 0 and event.ui_element == self.ui.menu_buttons[0]:
+            #             self.on_menu_click()
+            #         elif len(self.ui.menu_buttons) > 1 and event.ui_element == self.ui.menu_buttons[1]:
+            #             print("[DEBUG] Нажата кнопка Настройки")
+            #             self.open_settings()
             
             # Обработка клавиш
             elif event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
@@ -128,11 +128,11 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
             #     print(f"[DEBUG] Скроллбар обновлен: {self.scroll_y}")
             
             # Обработка событий окна настроек
-            if self.ui.key_bind_window:
-                self.ui.key_bind_window.handle_event(event)
+            # if self.ui.key_bind_window:
+            #     self.ui.key_bind_window.handle_event(event)
             
             # Обработка событий pygame_gui
-            self.ui.ui_manager.process_events(event)
+            # self.ui.ui_manager.process_events(event)
         
         if self.text.flag_end:
             self.close_input()
@@ -140,7 +140,7 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
 
 
         # Обновляем pygame_gui
-        self.ui.ui_manager.update(time_delta)
+        # self.ui.ui_manager.update(time_delta)
         
         # Синхронизация скролла
         # if self.scroll_y != self.scrollbar.scroll_y:
@@ -273,7 +273,7 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
         """Инициализация команд и фасада для клавиш"""
         print(f"[DEBUG] _init_commands_and_facade")
 
-        self.ui_manager = pygame_gui.UIManager((self.window_width, self.window_height))
+        # self.ui_manager = pygame_gui.UIManager((self.window_width, self.window_height))
         self.key_bind_window = None 
         
         # Команды
@@ -334,13 +334,13 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
         
         # --- СОЗДАЕМ И ДОБАВЛЯЕМ ОБЪЕКТЫ ---
         self.grid = GridObject(self, z_order=1)
-        self.top_panel = TopPanelObject(self, z_order=10)
-        self.ui = UIManagerObject(self, z_order=20)
+        # self.top_panel = TopPanelObject(self, z_order=10)
+        # self.ui = UIManagerObject(self, z_order=20)
         self.text = TextInput(self, self.screen, 0, 0, 0, 0)
         
         self.manager.add(self.grid, self.grid.z_order)
-        self.manager.add(self.ui, self.ui.z_order)
-        self.manager.add(self.top_panel, self.top_panel.z_order)
+        # self.manager.add(self.ui, self.ui.z_order)
+        # self.manager.add(self.top_panel, self.top_panel.z_order)
         self.manager.add(self.text, self.text.z_order)
 
     def change_cell(self, cmd:Command):
@@ -356,9 +356,9 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
         mouse_x, mouse_y = pygame.mouse.get_pos()
         
         # Проверяем, не наведена ли мышь на область кнопок меню
-        if mouse_y < self.panel_height:
-            self.re_ui = True
-            return None
+        # if mouse_y < self.panel_height:
+        #     self.re_ui = True
+        #     return None
         
         # Вычисляем возможный ряд и колонку по позиции мыши
         rel_x = mouse_x - self.padding - self.offsetW

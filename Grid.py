@@ -25,8 +25,9 @@ class GridObject(GameObject):
             self.screen.fill((50, 50, 50))
             # self.screen.fill((255, 250, 250))
             self.draw_grid()
-            self.ctx.re_top = True
-            self.ctx.re_ui = True
+            pygame.display.flip()
+            # self.ctx.re_top = True
+            # self.ctx.re_ui = True
             self.ctx.re_grid = False
     
     def _update(self):
