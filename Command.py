@@ -207,6 +207,8 @@ NO_ARGS_RANGES = [(0x00, 0x17), (0x1B, 0x27), (0x29, 0x60), (0x76, 0x76), (0x83,
 ONE_ARG_RANGES = [(0x18, 0x1A), (0x28, 0x28), (0x61, 0x62), (0x68, 0x6B), (0x70, 0x75), (0x7D, 0x7F), (0x89, 0x89), (0x8B, 0x8C), (0xA6, 0xA6), (0xB5, 0xB6)]
 TWO_ARGS_RANGES = [(0x63, 0x67), (0x6C, 0x6F), (0x77, 0x7C), (0x80, 0x82)]
 
+EXCEPTION_RANGES = [(0x64, 0x64), (0x67, 0x67)]
+
 def get_commands_in_ranges(ranges):
     """Получить команды из нескольких диапазонов"""
     result = set()
@@ -222,6 +224,7 @@ def get_commands_in_ranges(ranges):
 Command.NO_ARGS = get_commands_in_ranges(NO_ARGS_RANGES)
 Command.ONE_ARGS = get_commands_in_ranges(ONE_ARG_RANGES)
 Command.TWO_ARGS = get_commands_in_ranges(TWO_ARGS_RANGES)
+Command.EXCEPTION_ARG = get_commands_in_ranges(EXCEPTION_RANGES)
 
 
 ### группировки общей тематики
@@ -297,7 +300,8 @@ Command.C = (Command.IS_NOT_EMPTY, Command.IS_EMPTY, Command.IS_FALLING, Command
 Command.SHIFT_C = (Command.IS_CHERNOSKAL, Command.IS_KRASNOSKAL, Command.IS_GREEN_BLOCK, Command.IS_YELLOW_BLOCK, Command.IS_RED_BLOCK,
                    Command.IS_OPORA, Command.IS_QUADRO, Command.IS_ROAD, Command.IS_BOX)
 Command.V = (Command.VAR_EQUAL, Command.VAR_LESS, Command.VAR_GREATER)
-Command.B = (Command.ALARM, Command.I_DONT_KNOW4, Command.I_DONT_KNOW5)
+Command.SHIFT_V = (Command.ADD_VALUE, Command.SUBTRACT_VALUE)
+Command.B = (Command.ALARM, Command.I_DONT_KNOW4, Command.I_DONT_KNOW5, Command.BOX_ALL, Command.BOX_HALF, Command.BOX_BLUE, Command.BOX_CYAN, Command.BOX_GREEN, Command.BOX_RED, Command.BOX_VIOLET, Command.BOX_WHITE)
 Command.SHIFT_B = (Command.MODE_MANUAL, Command.MODE_AUTO)
 Command.M = (Command.AUTO_DIG_ON, Command.AUTO_DIG_OFF, Command.AGR_ON, Command.AGR_OFF)
 Command.BACKSPACE = (Command.NEWLINE, Command.EMPTY)

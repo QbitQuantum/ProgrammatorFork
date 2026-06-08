@@ -196,13 +196,17 @@ class Programmator:
         data_str = byte_data.decode('utf-8')
         parts = data_str.split(':')
         
+        index = 0
         result = []
         for part in parts:
             if '@' in part:
                 values = part.split('@')
+                if self._commands[index] in Command.EXCEPTION_ARG:
+                    values[0], values[1] = values[1], values[0]
                 result.append(values)
             else:
                 result.append([part])
+            index += 1
         
         return result
     
@@ -214,12 +218,16 @@ class Programmator:
             Байтовое представление значений
         """
         parts = []
+        index = 0
         for item in self._values:
             if len(item) > 1:
+                if self._commands[index] in Command.EXCEPTION_ARG:
+                    item[0], item[1] = item[1], item[0]
                 part = '@'.join(item)
             else:
                 part = item[0]
             parts.append(part)
+            index += 1
         
         result_str = ':'.join(parts)
         return bytearray(result_str, 'utf-8')

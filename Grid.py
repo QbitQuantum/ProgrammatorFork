@@ -43,10 +43,11 @@ class GridObject(GameObject):
         self.window_height = self.ctx.window_height
         self.thumb_size = self.ctx.thumb_size
         
-        # Кэш для поверхностей ячеек
         
         # Предварительно создаем все ячейки
         self._create_all_cells()
+
+        self._ensure_all_positions_updated()
     
     def _draw(self):
         if self.ctx.re_grid:
@@ -141,7 +142,7 @@ class GridObject(GameObject):
 
     def draw_grid(self):
         """Рисует сетку с изображениями"""
-        self._ensure_all_positions_updated()
+        self._ensure_positions_updated()
         
         window_height = self.window_height
         first_row = self.page * 12
@@ -151,7 +152,6 @@ class GridObject(GameObject):
         self._draw_line_numbers(first_row, last_row, self.offsetH, window_height)
         
         for row in range(first_row, last_row):
-            normalized_row = row % 12
             for col in range(self.cols):
                 idx = row * self.cols + col
                 if idx >= len(self.ctx.pro._commands):
@@ -226,6 +226,8 @@ class GridObject(GameObject):
             # Используем функцию для отрисовки кнопки
             self._draw_nav_button(button_rect, page, button_color, 
                                 text_color, border_color, font, ishover)
+
+
 
     # def draw_page_navigation(self, pagehover=None):
     #     """Рисует навигацию по страницам вверху экрана"""

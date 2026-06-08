@@ -17,7 +17,8 @@ from cmd_with_img_config import CommandConfig
 from test_async_sound import AsyncProgrammerSounds, SoundEffect
 from ScanCodeEnum import ScanCode
 
-
+class ScriptBuilder:
+    pass
 
 # --- Обновленный ProgrammatorViewer ---
 class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже GameObject
@@ -465,6 +466,7 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
         self.change_cell_x_cmd = ChangeCellCommand(self, command_group=Command.X)
         self.change_cell_shiftc_cmd = ChangeCellCommand(self, command_group=Command.SHIFT_C)
         self.change_cell_c_cmd = ChangeCellCommand(self, command_group=Command.C)
+        self.change_cell_shiftv_cmd = ChangeCellCommand(self, command_group=Command.SHIFT_V)
         self.change_cell_v_cmd = ChangeCellCommand(self, command_group=Command.V)
         self.change_cell_shiftb_cmd = ChangeCellCommand(self, command_group=Command.SHIFT_B)
         self.change_cell_b_cmd = ChangeCellCommand(self, command_group=Command.B)
@@ -535,6 +537,7 @@ class ProgrammatorViewer(GameObject): # Теперь сам viewer тоже Game
         self.key_facade.bind_scan_code(ScanCode.X, pygame.KMOD_NONE, self.change_cell_x_cmd)
         self.key_facade.bind_scan_code(ScanCode.C, pygame.KMOD_SHIFT, self.change_cell_shiftc_cmd)
         self.key_facade.bind_scan_code(ScanCode.C, pygame.KMOD_NONE, self.change_cell_c_cmd)
+        self.key_facade.bind_scan_code(ScanCode.V, pygame.KMOD_SHIFT, self.change_cell_shiftv_cmd)
         self.key_facade.bind_scan_code(ScanCode.V, pygame.KMOD_NONE, self.change_cell_v_cmd)
         self.key_facade.bind_scan_code(ScanCode.B, pygame.KMOD_SHIFT, self.change_cell_shiftb_cmd)
         self.key_facade.bind_scan_code(ScanCode.B, pygame.KMOD_NONE, self.change_cell_b_cmd)

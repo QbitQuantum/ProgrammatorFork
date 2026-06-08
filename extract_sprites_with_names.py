@@ -1,7 +1,7 @@
 from PIL import Image
 import os
 
-def extract_and_rename_sprites(sprite_sheet_path, rows, cols, output_dir, command_enum):
+def extract_and_rename_sprites(sprite_sheet_path, rows, cols, output_dir, command_enum_class):
     """
     Извлечение спрайтов из равномерной сетки и переименование согласно порядку в Command
     """
@@ -9,17 +9,15 @@ def extract_and_rename_sprites(sprite_sheet_path, rows, cols, output_dir, comman
     sheet = Image.open(sprite_sheet_path)
     
     # Размер одного спрайта
-    sprite_width = 32
-    sprite_height = 32
+    sprite_width = 110
+    sprite_height = 150
     
     # Создаем папку для результатов
     os.makedirs(output_dir, exist_ok=True)
     
-    # Получаем все имена из Command Enum в порядке возрастания значений
-    # Сортируем по байтовому значению
-    command_names = []
-    for cmd in command_enum:
-        command_names.append(cmd.name)
+    # Получаем все имена из Enum класса в порядке объявления
+    # В Python 3.6+ порядок сохраняется
+    command_names = [member.name for member in command_enum_class]
     
     print(f"Найдено команд в Enum: {len(command_names)}")
     
@@ -30,8 +28,8 @@ def extract_and_rename_sprites(sprite_sheet_path, rows, cols, output_dir, comman
     for row in range(rows):
         for col in range(cols):
             # Координаты текущего спрайта (с вашими смещениями)
-            left = col * sprite_width + 20
-            top = row * sprite_height + 38
+            left = col * sprite_width + 32
+            top = row * sprite_height + 16
             right = left + sprite_width
             bottom = top + sprite_height
             
@@ -40,7 +38,7 @@ def extract_and_rename_sprites(sprite_sheet_path, rows, cols, output_dir, comman
             
             # Определяем имя файла
             if index < len(command_names):
-                # Берем имя из Command Enum
+                # Берем имя из Enum
                 filename = f"{command_names[index]}.png"
             else:
                 # Стандартное имя для остальных
@@ -55,7 +53,7 @@ def extract_and_rename_sprites(sprite_sheet_path, rows, cols, output_dir, comman
             index += 1
     
     print(f"\nИзвлечено {rows * cols} спрайтов в {output_dir}")
-    print(f"Из них названы по Command: {min(len(command_names), rows*cols)}")
+    print(f"Из них названы по Enum: {min(len(command_names), rows*cols)}")
     print(f"Остальные названы стандартно: {max(0, rows*cols - len(command_names))}")
 
 # Ваш класс Command
@@ -261,11 +259,56 @@ class Command(Enum):
         return self.name.lower()
 
 
+class Craft(Enum):
+    TP = b'\x00'
+    RESP = b'\x01'
+    UP = b'\x02'
+    MARKET = b'\x03'
+    CLANS = b'\x04'
+    BOOM = b'\x05'
+    PROTO = b'\x06'
+    RAZ = b'\x07'
+    CREDIT = b'\x08'
+    REM = b'\x09'
+    GEO = b'\x0A'
+    G50 = b'\x0B'
+    G51 = b'\x0C'
+    G52 = b'\x0D'
+    G53 = b'\x0E'
+    G54 = b'\x0F'
+    G116 = b'\x10'
+    VRD = b'\x11'
+    ARD = b'\x12'
+    BRD = b'\x13'
+    TPR = b'\x14'
+    KR = b'\x15'
+    BG = b'\x16'
+    ZZ = b'\x17'
+    CRAFT = b'\x18'
+    GUN = b'\x19'
+    GATE = b'\x1A'
+    DIZZ = b'\x1B'
+    STOCK = b'\x1C'
+    SKAN = b'\x1D'
+    G119 = b'\x1E'
+    POLY = b'\x1F'
+    NANO = b'\x20'
+    ACCU = b'\x21'
+    TRANS = b'\x22'
+    COMP = b'\x23'
+    C190 = b'\x24'
+    G114 = b'\x25'
+    G117 = b'\x26'
+    AM = b'\x27'
+    EMI = b'\x28'
+    G55 = b'\x29'
+    SPOT = b'\x2A'
+
 # Использование
 extract_and_rename_sprites(
-    sprite_sheet_path="prog_icons.jpg",
-    rows=12,
-    cols=16,
-    output_dir="sprites",
-    command_enum=Command
+    sprite_sheet_path="items.png",
+    rows=5,
+    cols=9,
+    output_dir="items",
+    command_enum_class=Craft
 )
